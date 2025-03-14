@@ -4,6 +4,7 @@ import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -13,19 +14,16 @@ public class Libro {
 
     @Id
     private Long isbn;
-    
-    
+
     private String titulo;
 
-    
-    private Integer ejemplares; 
+    private Integer ejemplares;
 
-    
     @Temporal(TemporalType.DATE)
     private Date alta;
 
-    
     @ManyToOne
+    @JoinColumn(name = "autor_id")
     private Autor autor;
 
     @ManyToOne
@@ -85,7 +83,5 @@ public class Libro {
     public void setEditorial(Editorial editorial) {
         this.editorial = editorial;
     }
-    
 
 }
-
