@@ -1,27 +1,27 @@
 package com.egg.biblioteca.servicios;
 
-import com.egg.biblioteca.entidades.Autor;
-import com.egg.biblioteca.exepciones.MyException;
-import com.egg.biblioteca.repositorios.AutorRepositorio;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.egg.biblioteca.entidades.Autor;
+import com.egg.biblioteca.exepciones.MyException;
+import com.egg.biblioteca.repositorios.AutorRepositorio;
+
 @Service
-public class AutorServicio {
+public class AutorServicios {
 
     @Autowired
     private AutorRepositorio autorRepositorio;
 
 
     @Transactional
-    public void crearAutor(String nombre) throws MyException{
+    public void crearAutor( String nombre) throws MyException{
         
         validar(nombre);
         

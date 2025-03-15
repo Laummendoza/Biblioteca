@@ -1,2 +1,2 @@
 
-
+SHOW CREATE TABLE editorial;

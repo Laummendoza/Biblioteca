@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.egg.biblioteca.entidades.Autor;
 import com.egg.biblioteca.exepciones.MyException;
-import com.egg.biblioteca.servicios.AutorServicio;
+import com.egg.biblioteca.servicios.AutorServicios;
 
 
 @Controller
@@ -22,7 +22,7 @@ import com.egg.biblioteca.servicios.AutorServicio;
 public class AutorControlador {
 
     @Autowired 
-    private AutorServicio autorServicio;
+    private AutorServicios autorServicio;
 
     @GetMapping("/registrar") // localhost:8080/autor/registrar
     public String registrar() {
@@ -35,8 +35,10 @@ public class AutorControlador {
             autorServicio.crearAutor(nombre);    // llamo a mi servicio para persistir
             modelo.put("exito", "El autor fue cargado correctamente.");       
         } catch (MyException ex) {    
+            System.out.println(ex.getMessage());
             modelo.put("error", ex.getMessage());      
             // Logger.getLogger(AutorControlador.class.getName()).log(Level.SEVERE, null, ex);
+
             return "autor_form.html";
         }        
         return "index.html";
