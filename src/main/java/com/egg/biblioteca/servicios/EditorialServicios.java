@@ -1,4 +1,5 @@
 package com.egg.biblioteca.servicios;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +13,9 @@ import com.egg.biblioteca.entidades.Editorial;
 import com.egg.biblioteca.exepciones.MyException;
 import com.egg.biblioteca.repositorios.EditorialRepositorio;
 
-
-
 @Service
 public class EditorialServicios {
-    
+
     @Autowired
     private EditorialRepositorio editorialRepositorio;
 
@@ -24,22 +23,22 @@ public class EditorialServicios {
     public void crearEditorial(String nombre) throws MyException {
 
         validar(nombre);
-        Editorial editorial =new Editorial();// Instancio un objeto del tipo Editorial
+        Editorial editorial = new Editorial();// Instancio un objeto del tipo Editorial
         editorial.setNombre(nombre);// Seteo el atributo, con el valor recibido como parámetro
         editorialRepositorio.save(editorial);// Persisto el dato en mi BBDD
     }
-@Transactional(readOnly = true)
-    public List<Editorial> listarEditoriales() {
-        
-        List<Editorial> editoriales = new ArrayList<>();
 
+    @Transactional(readOnly = true)
+    public List<Editorial> listarEditoriales() {
+
+        List<Editorial> editoriales = new ArrayList<>();
 
         editoriales = editorialRepositorio.findAll();
         return editoriales;
     }
 
     @Transactional
-    public void modificarEditorial(UUID id, String nombre) throws MyException{
+    public void modificarEditorial(String id, String nombre) throws MyException {
         validar(nombre);
 
         Optional<Editorial> respuesta = editorialRepositorio.findById(id.toString());
@@ -54,13 +53,18 @@ public class EditorialServicios {
     }
 
     @Transactional
-    public void eliminar(UUID id) throws MyException{
+    public void eliminar(UUID id) throws MyException {
         Optional<Editorial> editorialOpt = editorialRepositorio.findById(id.toString());
         if (editorialOpt.isPresent()) {
             editorialRepositorio.delete(editorialOpt.get());
         } else {
             throw new MyException("La editorial con el ID especificado no existe");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Editorial getOne(String id) {
+        return editorialRepositorio.findById(id).orElse(null);
     }
 
     private void validar(String nombre) throws MyException {

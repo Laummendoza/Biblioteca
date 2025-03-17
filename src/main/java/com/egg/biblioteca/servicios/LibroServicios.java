@@ -99,7 +99,7 @@ public void crearLibro(Long isbn, String titulo, Integer ejemplares, UUID idAuto
     }
     
 
-    private void validar(Long isbn, String titulo, Integer ejemplares, UUID idAutor, UUID idEditorial)
+    private void validar(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial)
             throws MyException {
 
         if (isbn == null) {
@@ -118,5 +118,59 @@ public void crearLibro(Long isbn, String titulo, Integer ejemplares, UUID idAuto
             throw new MyException("El ID de la editorial no puede ser nulo o estar vacío.");
         }
     }
+    @Transactional
+    public void modificarLibro(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial) throws MyException {
+
+        validar(isbn, titulo, ejemplares, idAutor, idEditorial);
+
+        Optional<Libro> respuesta = libroRepositorio.findById(isbn);
+        Optional<Autor> respuestaAutor = autorRepositorio.findById(idAutor);
+        Optional<Editorial> respuestaEditorial = editorialRepositorio.findById(idEditorial);
+
+        if (respuesta.isEmpty()) {
+            throw new MyException("El libro especificado no existe.");
+        }
+
+        if (respuestaAutor.isEmpty()) {
+            throw new MyException("El autor especificado no existe.");
+        }
+
+        if (respuestaEditorial.isEmpty()) {
+            throw new MyException("La editorial especificada no existe.");
+        }
+
+        Libro libro = respuesta.get();
+        libro.setTitulo(titulo);
+        libro.setEjemplares(ejemplares);
+        libro.setAutor(respuestaAutor.get());
+        libro.setEditorial(respuestaEditorial.get());
+
+        libroRepositorio.save(libro);
+    }
+
+    @Transactional(readOnly = true)
+    public Libro getOne(Long isbn) {
+        return libroRepositorio.findById(isbn).orElse(null);
+    }
+
+    private void validar(Long isbn, String titulo, Integer ejemplares, UUID idAutor, UUID idEditorial) throws MyException {
+
+        if (isbn == null) {
+            throw new MyException("El ISBN no puede ser nulo.");
+        }
+        if (titulo == null || titulo.trim().isEmpty()) {
+            throw new MyException("El título no puede ser nulo o estar vacío.");
+        }
+        if (ejemplares == null) {
+            throw new MyException("La cantidad de ejemplares no puede ser nula.");
+        }
+        if (idAutor == null) {
+            throw new MyException("El ID del autor no puede ser nulo o estar vacío.");
+        }
+        if (idEditorial == null) {
+            throw new MyException("El ID de la editorial no puede ser nulo o estar vacío.");
+        }
+    }
+
 
 }
