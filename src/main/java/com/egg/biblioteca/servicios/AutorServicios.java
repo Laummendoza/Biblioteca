@@ -3,7 +3,6 @@ package com.egg.biblioteca.servicios;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,35 +40,32 @@ public class AutorServicios {
     }
     
     @Transactional
-    public void modificarAutor(String nombre, UUID id) throws MyException{
-        
-        validar(nombre);
-        Optional<Autor> respuesta = autorRepositorio.findById(id);
+public void modificarAutor(String nombre, String id) throws MyException {
+    validar(nombre);
+    Optional<Autor> respuesta = autorRepositorio.findById(id);
 
-        if (respuesta.isPresent()) {
-            Autor autor = respuesta.get();
-            autor.setNombre(nombre);
-            autorRepositorio.save(autor);
-
-        } else {
-            throw new MyException("No se encontró un autor con el ID especificado");
-        }
+    if (respuesta.isPresent()) {
+        Autor autor = respuesta.get();
+        autor.setNombre(nombre);
+        autorRepositorio.save(autor);
+    } else {
+        throw new MyException("No se encontró un autor con el ID especificado");
     }
+}
     
-    @Transactional
-    public void eliminar(UUID id) throws MyException{
-        Optional<Autor> autorOpt = autorRepositorio.findById(id);
-        if (autorOpt.isPresent()) {
-            autorRepositorio.delete(autorOpt.get());
-        } else {
-            throw new MyException("El autor con el ID especificado no existe");
-        }
-
+@Transactional
+public void eliminar(String id) throws MyException {
+    Optional<Autor> autorOpt = autorRepositorio.findById(id);
+    if (autorOpt.isPresent()) {
+        autorRepositorio.delete(autorOpt.get());
+    } else {
+        throw new MyException("El autor con el ID especificado no existe");
     }
-    @Transactional(readOnly = true)
-    public Autor getOne(UUID id) {
-        return autorRepositorio.findById(id).orElse(null);
-    }
+}
+@Transactional(readOnly = true)
+public Autor getOne(String id) {
+    return autorRepositorio.findById(id).orElse(null);
+}
     
     private void validar(String nombre) throws MyException {
         if (nombre == null || nombre.trim().isEmpty()) {

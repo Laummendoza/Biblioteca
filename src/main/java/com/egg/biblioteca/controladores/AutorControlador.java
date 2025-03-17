@@ -1,7 +1,6 @@
 package com.egg.biblioteca.controladores;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,20 +52,19 @@ public class AutorControlador {
     }
 
     @GetMapping("/modificar/{id}")
-    public String modificar(@PathVariable UUID id, ModelMap model) {
-        model.put("autor", autorServicio.getOne(id));
+public String modificar(@PathVariable String id, ModelMap model) {
+    model.put("autor", autorServicio.getOne(id));
+    return "autor_modificar.html";
+}
+
+@PostMapping("{id}")
+public String modificar(@PathVariable String id, String nombre, ModelMap model) {
+    try {
+        autorServicio.modificarAutor(nombre, id);  // Aquí pasamos el id como String
+        return "redirect:../lista";
+    } catch (MyException ex) {
+        model.put("error", ex.getMessage());
         return "autor_modificar.html";
     }
-
-    @PostMapping("{id}")
-    public String modificar(@PathVariable UUID id, String nombre, ModelMap model) {
-        try{
-            autorServicio.modificarAutor(nombre, id);
-            return "redirect:../lista";
-        }catch (MyException ex) {
-            model.put("error", ex.getMessage());
-            return "autor_modificar.html";
-        }
-        
-    }
+}
 }

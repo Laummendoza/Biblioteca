@@ -42,7 +42,7 @@ public class EditorialServicios {
     public void modificarEditorial(UUID id, String nombre) throws MyException{
         validar(nombre);
 
-        Optional<Editorial> respuesta = editorialRepositorio.findById(id);
+        Optional<Editorial> respuesta = editorialRepositorio.findById(id.toString());
 
         if (respuesta.isPresent()) {
             Editorial editorial = respuesta.get();
@@ -55,7 +55,7 @@ public class EditorialServicios {
 
     @Transactional
     public void eliminar(UUID id) throws MyException{
-        Optional<Editorial> editorialOpt = editorialRepositorio.findById(id);
+        Optional<Editorial> editorialOpt = editorialRepositorio.findById(id.toString());
         if (editorialOpt.isPresent()) {
             editorialRepositorio.delete(editorialOpt.get());
         } else {
