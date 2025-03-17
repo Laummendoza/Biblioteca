@@ -57,7 +57,7 @@ public String modificar(@PathVariable String id, ModelMap model) {
     return "autor_modificar.html";
 }
 
-@PostMapping("{id}")
+@PostMapping("/modificar/{id}")
 public String modificar(@PathVariable String id, String nombre, ModelMap model) {
     try {
         autorServicio.modificarAutor(nombre, id);  // Aquí pasamos el id como String
@@ -67,4 +67,5 @@ public String modificar(@PathVariable String id, String nombre, ModelMap model) 
         return "autor_modificar.html";
     }
 }
+
 }
